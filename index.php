@@ -1,3 +1,5 @@
+<!-- ملف عرض الواجهة الرئيسية للموقع بعد تسجيل الدخول -->
+<!-- كود البي اتش بي الخاص بالواجهة الرئيسية -->
 <?php
   include("session.php");
   $exp_category_dc = mysqli_query($con, "SELECT expensecategory FROM expenses WHERE user_id = '$userid' GROUP BY expensecategory");
