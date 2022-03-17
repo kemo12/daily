@@ -1,40 +1,62 @@
+<!-- ملف واجهة اضافة المصاريف  -->
 <?php
+/* استدعاء ملف السيشن */
 include("session.php");
 $update = false;
 $del = false;
 $expenseamount = "";
+/* تخزين الوقت في متغير */
 $expensedate = date("Y-m-d");
+/* تخزين نوع المصروفات في مغير */
 $expensecategory = "Entertainment";
+/* اذا تم الضغط على زر اضافة بعد تعبئة الحقول يتم التالي */
 if (isset($_POST['add'])) {
+    /* تخزين البيانات التي تم اضافتها في حقول الاضافة في متغيرات */
     $expenseamount = $_POST['expenseamount'];
     $expensedate = $_POST['expensedate'];
     $expensecategory = $_POST['expensecategory'];
-
-    $expenses = "INSERT INTO expenses (user_id, expense,expensedate,expensecategory) VALUES ('$userid', '$expenseamount','$expensedate','$expensecategory')";
+/* جملة كويري لاضافة المصروف  في قاعدة البيانات */
+    $expenses = "INSERT INTO ex/*  */penses (user_id, expense,expensedate,expensecategory) VALUES ('$userid', '$expenseamount','$expensedate','$expensecategory')";
+    /* تخزين ناتج عملية الاضافة في متغير لعرضها في حال تم الاضافة او لا */
     $result = mysqli_query($con, $expenses) or die("Something Went Wrong!");
+    /* الانتقال لصفحة اضافة المصروفات أي تحديث الصفحة */
     header('location: add_expense.php');
 }
-
+/* في حال تم الضغط على زر تحديث */
 if (isset($_POST['update'])) {
+    /* تخزين الاي دي الخاص بالمصروف المراد تعديله */
     $id = $_GET['edit'];
+    /* تخزين البيانات التي تم اضافتها في حقول الاضافة في متغيرات */
+
     $expenseamount = $_POST['expenseamount'];
     $expensedate = $_POST['expensedate'];
     $expensecategory = $_POST['expensecategory'];
+/* جملة كويري لتحديث المصروف  في قاعدة البيانات */
 
     $sql = "UPDATE expenses SET expense='$expenseamount', expensedate='$expensedate', expensecategory='$expensecategory' WHERE user_id='$userid' AND expense_id='$id'";
+        /* فحص  عملية التعديل في حال تم الاضافة او لا */
+
     if (mysqli_query($con, $sql)) {
+
         echo "Records were updated successfully.";
     } else {
         echo "ERROR: Could not able to execute $sql. " . mysqli_error($con);
     }
     header('location: manage_expense.php');
 }
+/* في حال تم الضغط على زر تحديث */
 
 if (isset($_POST['update'])) {
+        /* تخزين الاي دي الخاص بالمصروف المراد تعديله */
+
     $id = $_GET['edit'];
+        /* تخزين البيانات التي تم اضافتها في حقول الاضافة في متغيرات */
+
     $expenseamount = $_POST['expenseamount'];
     $expensedate = $_POST['expensedate'];
     $expensecategory = $_POST['expensecategory'];
+            /* فحص  عملية التعديل في حال تم الاضافة او لا */
+
 
     $sql = "UPDATE expenses SET expense='$expenseamount', expensedate='$expensedate', expensecategory='$expensecategory' WHERE user_id='$userid' AND expense_id='$id'";
     if (mysqli_query($con, $sql)) {
@@ -44,14 +66,14 @@ if (isset($_POST['update'])) {
     }
     header('location: manage_expense.php');
 }
-
+/* عند الضغط على زر حدف المصروف */
 if (isset($_POST['delete'])) {
+    /* تخزين الاي دي الخاص بالمصروف المراد حذفه */
     $id = $_GET['delete'];
-    $expenseamount = $_POST['expenseamount'];
-    $expensedate = $_POST['expensedate'];
-    $expensecategory = $_POST['expensecategory'];
+/* جملة كويري لحذف المصروف  في قاعدة البيانات */
 
     $sql = "DELETE FROM expenses WHERE user_id='$userid' AND expense_id='$id'";
+    /* فحص هل تم الحذف أم لا واظهار جملة تفيد ذلك */
     if (mysqli_query($con, $sql)) {
         echo "تم تحديث السجلات بنجاح.";
     } else {
@@ -59,11 +81,14 @@ if (isset($_POST['delete'])) {
     }
     header('location: manage_expense.php');
 }
-
+/* عند الضغط على زر تعديل  */
 if (isset($_GET['edit'])) {
+    /* تخزين الاي دي الخاص بالمصروف المراد تعديله */
     $id = $_GET['edit'];
     $update = true;
+    /* جملة استعلام لجلب بيانات العنصر المراد التعديل عليه */
     $record = mysqli_query($con, "SELECT * FROM expenses WHERE user_id='$userid' AND expense_id=$id");
+    /* فحص هل يوجد في الداتا بيز بيانات خاصة برقم الاي دي  واذا كان هناك يقوم بعرضها واذا لا يتم اظهار رسالة خطأ */
     if (mysqli_num_rows($record) == 1) {
         $n = mysqli_fetch_array($record);
         $expenseamount = $n['expense'];
@@ -73,10 +98,12 @@ if (isset($_GET['edit'])) {
         echo ("WARNING: AUTHORIZATION ERROR: Trying to Access Unauthorized data");
     }
 }
-
+/* عند الضغط على زر حذف */
 if (isset($_GET['delete'])) {
+    /* تخزي الاي دي الخاص بالعنصر المراد حذفه */
     $id = $_GET['delete'];
     $del = true;
+    /* جملة كويري لجلب العنصر عن طريق الاي دي  */
     $record = mysqli_query($con, "SELECT * FROM expenses WHERE user_id='$userid' AND expense_id=$id");
 
     if (mysqli_num_rows($record) == 1) {
@@ -89,6 +116,7 @@ if (isset($_GET['delete'])) {
     }
 }
 ?>
+<!-- بداية كود الاتش تي ام ال -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -154,7 +182,7 @@ if (isset($_GET['delete'])) {
                                 <img class="img img-fluid rounded-circle" src="<?php echo $userprofile ?>" width="25">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="profile.phcol-mdp">ملفي الشخصي</a>
+                                <a class="dropdown-item" href="profile.php">ملفي الشخصي</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="logout.php">تسجيل الخروج</a>
                             </div>

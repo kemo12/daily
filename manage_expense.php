@@ -1,5 +1,9 @@
+<!-- ملف واجهة ادارة المصروفات
+ -->
 <?php
+/* استدعاء ملف السيشن */
 include("session.php");
+/* جلب المصروفات الخاصة بالمستخدم عن طريق الاي دي الخاص به */
 $exp_fetched = mysqli_query($con, "SELECT * FROM expenses WHERE user_id = '$userid'");
 ?>
 <!DOCTYPE html>

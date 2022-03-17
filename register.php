@@ -212,13 +212,11 @@ $email = stripslashes($_REQUEST['email']);
 <script src="js/profile-picture.js"></script>
 <!-- Menu Toggle Script -->
 <script>
-    // كود جي كويري في حال الضغط على العنصر الذي يحتوي اسم الكلام منيو توجل لتنفيذ كود معين  
+        /* فانكشن خاصة بالقائمة الجانبية من حيث الاظهار والاخفاء */
 
   $("#menu-toggle").click(function(e) {
-        // الغاء تحديث الصفحة عند تتنفيذ الأمر
 
     e.preventDefault();
-        // يتم تغير اضافة اسم الكلاس أو حذفه عند تنفيذ الدالة
 
     $("#wrapper").toggleClass("toggled");
   });

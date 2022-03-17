@@ -1,7 +1,11 @@
+<!-- صفحة اعادة تعيين كلمة المرور -->
 <?php
+/* استدعاء ملف السيشن  */
 include("session.php");
+/* عمل استعلام عن الاي دي الخاص باليوزر المخزن في السيشن  */
 $exp_fetched = mysqli_query($con, "SELECT * FROM expenses WHERE user_id = '$userid'");
 ?>
+<!-- بدء كود الاتش تي ام امل الخاص بالصفحة -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -133,11 +137,13 @@ $exp_fetched = mysqli_query($con, "SELECT * FROM expenses WHERE user_id = '$user
     <!-- /#wrapper -->
 
     <!-- Bootstrap core JavaScript -->
+    <!-- استدعاء الملفات الهامة لمتكبة البوتستراب -->
     <script src="js/jquery.slim.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/Chart.min.js"></script>
     <!-- Menu Toggle Script -->
     <script>
+        /* فانكشن خاصة بالقائمة الجانبية من حيث الاظهار والاخفاء */
         $("#menu-toggle").click(function(e) {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");

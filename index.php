@@ -1,13 +1,19 @@
 <!-- ملف عرض الواجهة الرئيسية للموقع بعد تسجيل الدخول -->
 <!-- كود البي اتش بي الخاص بالواجهة الرئيسية -->
 <?php
+/* استدعاء ملف السيشن  */
   include("session.php");
+  /* استعلام لجلب المصاريف الخاصة بالمستخدم من قاعدة البيانات */
   $exp_category_dc = mysqli_query($con, "SELECT expensecategory FROM expenses WHERE user_id = '$userid' GROUP BY expensecategory");
-  $exp_amt_dc = mysqli_query($con, "SELECT SUM(expense) FROM expenses WHERE user_id = '$userid' GROUP BY expensecategory");
+    /* استعلام لجلب مجموع المصاريف الخاصة بالمستخدم من قاعدة البيانات */
 
+  $exp_amt_dc = mysqli_query($con, "SELECT SUM(expense) FROM expenses WHERE user_id = '$userid' GROUP BY expensecategory");
+/* استعلام خاص بجلب تاريخ المصاريف الخاصة باليوزر */
   $exp_date_line = mysqli_query($con, "SELECT expensedate FROM expenses WHERE user_id = '$userid' GROUP BY expensedate");
+ /*  استعلام خاص بمجموع المصاريف   مع تواريخهم*/
   $exp_amt_line = mysqli_query($con, "SELECT SUM(expense) FROM expenses WHERE user_id = '$userid' GROUP BY expensedate");
 ?>
+<!-- كود الاتش تي ام ال الخاص بالوجاهة الرئيسية -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,6 +34,7 @@
 
   <!-- Feather JS for Icons -->
   <script src="js/feather.min.js"></script>
+  <!-- كود السي اس اس الخاص بتنسيق الواجهات -->
   <style>
     .card a {
       color: #000;
@@ -159,6 +166,8 @@
   <script src="js/Chart.min.js"></script>
   <!-- Menu Toggle Script -->
   <script>
+/* فانكشن خاصة بالقائمة الجانبية من حيث الاظهار والاخفاء */
+ 
     $("#menu-toggle").click(function(e) {
       e.preventDefault();
       $("#wrapper").toggleClass("toggled");
@@ -168,6 +177,7 @@
     feather.replace()
   </script>
   <script>
+    /* كود لعرض الرسومات البيانية الخاصة بمصاريف المستخدم في الواجهة الرئيسية */
     var ctx = document.getElementById('expense_category_pie').getContext('2d');
     var myChart = new Chart(ctx, {
       type: 'bar',
