@@ -1,50 +1,66 @@
+<!-- ملف خاص بواجهات البروفايل وبرمجته -->
+<!-- بدء كود البي اتش بي الخاص ببرمجة واجهة البروفايل -->
 <?php
+/* استدعاء ملف الكونفيج الخاص بالاتصال بقاعدة البيانات */
 include("session.php");
+/* جملة استعلام عن البيانات الخاص باليوزر الذي قد سجل دخوله عن طريق الاي دي */
 $exp_fetched = mysqli_query($con, "SELECT * FROM expenses WHERE user_id = '$userid'");
-
+/* عند الضغط على حفظ البيانات يتم عمل الاتي  */
 if (isset($_POST['save'])) {
+    /* يتم جلب الاسم الاول والاسم الاخير من الحقول الخاصة بهم في الفورم وتخزينها في متغير */
     $fname = $_POST['first_name'];
     $lname = $_POST['last_name'];
-
+    /* جملة كويري لتعديل الاسم الاول والاسم الاخير الخاصان باليوزر في قاعدة البيانات */
     $sql = "UPDATE users SET firstname = '$fname', lastname='$lname' WHERE user_id='$userid'";
+    /* فحص اذا تمت عملية تحديث البيانات بنجاح أم لا */
     if (mysqli_query($con, $sql)) {
+        /* في حال تمت يتم اظهار رسالة تفيد نجاح العملية */
         echo "تم التحديث.";
     } else {
+        /* في حال لم تتم يتم طباعة المشكلة التي تمت مواجهتها */
         echo "ERROR: Could not able to execute $sql. " . mysqli_error($con);
     }
+    /* جملة للانتقال لصفحة البروفايل أي تحديث الصفحة بعد نجاح العملية */
     header('location: profile.php');
 }
-
+/* في حال تم الضغط على زر اضافة صورة */
 if (isset($_POST['but_upload'])) {
-
+/* يتم تخزين الصورة في متغير مع اسمها */
     $name = $_FILES['file']['name'];
+    /* متغيران بتخزين المسار الذي سيتم حفظ الصورة فيه */
     $target_dir = "uploads/";
     $target_file = $target_dir . basename($_FILES["file"]["name"]);
 
-    // Select file type
+    /* يتم تخزين الصورة المراد رفعها في المتغير التالي */
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-    // Valid file extensions
+    /* تخصيص أنواع معينة يجب أن تكون الصورة المراد رفها ضمنها */
     $extensions_arr = array("jpg", "jpeg", "png", "gif");
 
     // Check extension
+    /* يتم فحص نوع الملف المرفوع هل يوجد بين الأنواع التي تم تحديدها سابقا ، أي في المتغير أعلاه */
     if (in_array($imageFileType, $extensions_arr)) {
 
         // Insert record
+        /* جملة كويري لإضافة عنوان الصورة ولأي مستخدم في الداتا بيز */
         $query = "UPDATE users SET profile_path = '$name' WHERE user_id='$userid'";
+        /* تنفيذ الأمر في الداتا بيز */
         mysqli_query($con, $query);
 
         // Upload file
+        /* نقل الصورة في ملف الابديتس الموجود في المشروع */
         move_uploaded_file($_FILES['file']['tmp_name'], $target_dir . $name);
-
+/* عملية تحديث للصفحة */
         header("Refresh: 0");
     }
 }
 
 ?>
+<!-- نهاية كود البي اتش بي الخاص ببرمجة واجهة البروفايل -->
+<!-- بدداية الكود الاتش تي أم ال الخاص بالتصميم -->
 <!DOCTYPE html>
 <html lang="en">
-
+<!-- بداية الهيدر الخاص بصفحة الاتش تي ام ال -->
 <head>
 
     <meta charset="utf-8">
@@ -64,6 +80,7 @@ if (isset($_POST['but_upload'])) {
     <script src="js/feather.min.js"></script>
 
 </head>
+<!-- نهاية الهيدر الخاص بصفحة الاتش تي ام ال -->
 
 <body>
 
@@ -194,6 +211,7 @@ if (isset($_POST['but_upload'])) {
     <!-- /#wrapper -->
 
     <!-- Bootstrap core JavaScript -->
+    <!-- استدعاء الملفات الهامة الخاصة بمكتبة البوتسراب -->
     <script src="js/jquery.slim.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/Chart.min.js"></script>
@@ -208,6 +226,7 @@ if (isset($_POST['but_upload'])) {
         feather.replace()
     </script>
     <script type="text/javascript">
+        /* الكود الخاص بزر رفع الصورة */
         $(document).ready(function() {
 
 
@@ -231,5 +250,6 @@ if (isset($_POST['but_upload'])) {
     </script>
 
 </body>
+<!-- نهاية الكود الاتش تي أم ال الخاص بالتصميم -->
 
 </html>

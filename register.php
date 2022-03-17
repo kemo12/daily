@@ -1,35 +1,55 @@
+<!-- ملف يحتوي واجهة انشاء حساب وبرمجتها -->
+<!-- بدء كود البي اتش بي الخاص ببرمجة الواجهة -->
 <?php
+//  استدعاء ملف الاتصال بقاعدة البيانات
 require('config.php');
+// كود للتحقق من حقول الفورم التي يقوم الشخص بإدخال البيانات الخاصة به فيها
+// هل الاسم الاول ليس فارغ 
 if (isset($_REQUEST['firstname'])) {
+  // هل كلمة المرور تساوي اعادة كلمة المرور 
   if ($_REQUEST['password'] == $_REQUEST['confirm_password']) {
-    $firstname = stripslashes($_REQUEST['firstname']);
+// دالة لازالة علامة التنصيص من النص الخارج من حقل الاسم الاول
+$firstname = stripslashes($_REQUEST['firstname']);
+  // دالة لجعل النص المكتوب في حقل الاسم الاول صالح للتعامل معه الداتا بيز 
     $firstname = mysqli_real_escape_string($con, $firstname);
-    $lastname = stripslashes($_REQUEST['lastname']);
-    $lastname = mysqli_real_escape_string($con, $lastname);
+// دالة لازالة علامة التنصيص من النص الخارج من حقل الاسم الاخير
+$lastname = stripslashes($_REQUEST['lastname']);
+  // دالة لجعل النص المكتوب في حقل الاسم الاخير صالح للتعامل معه الداتا بيز 
+  $lastname = mysqli_real_escape_string($con, $lastname);
+// دالة لازالة علامة التنصيص من النص الخارج من حقل الايميل
+$email = stripslashes($_REQUEST['email']);
+  // دالة لجعل النص المكتوب في حقل الايميل صالح للتعامل معه الداتا بيز 
+  $email = mysqli_real_escape_string($con, $email);
 
-    $email = stripslashes($_REQUEST['email']);
-    $email = mysqli_real_escape_string($con, $email);
 
-
+// دالة لازالة علامة التنصيص من النص الخارج من حقل كلمة المرور
     $password = stripslashes($_REQUEST['password']);
+      // دالة لجعل النص المكتوب في حقل كلمة المرور صالح للتعامل معه الداتا بيز 
+
     $password = mysqli_real_escape_string($con, $password);
 
-
+// متغير لتسجيل الوقت الحالي الذي يتم انشاء الحساب فيه
+// باستخدام فورمات معين سنة شعر يوم ساعة دقيقة ثانية
     $trn_date = date("Y-m-d H:i:s");
-
+// استعلام لتخزين البيانات الخاص بالمستخدم الجديد في الداتا بيز 
     $query = "INSERT into `users` (firstname, lastname, password, email, trn_date) VALUES ('$firstname','$lastname', '" . md5($password) . "', '$email', '$trn_date')";
+    // ارسال الاستعلام لقاعدة البيانات وتخزين الاستجابة في متغير
     $result = mysqli_query($con, $query);
+    // فحص للتحقق هل تم انشاء الحساب أم هناك مشكلة
     if ($result) {
+      // في حالة تم انشاء الحساب بنجاح يتم التحويل لواجهة تسجيل الدخول
       header("Location: login.php");
     }
   } else {
+    // لو لم يتم تسجيل بيانات المستخدم في قاعدة البيانات في قاعدة البيانات يتم اظهار رسالة تفيد أن كلمة المرور خاطئة
     echo ("خطأ: الرجاء التاكد من كلمة المرور");
   }
 }
 ?>
+<!-- بدء كود الاتش تي ام ال الخاص بالواجهات  -->
 <!DOCTYPE html>
 <html lang="en">
-
+<!-- بدء الهيدر  -->
 <head>
 
   <meta charset="utf-8">
@@ -40,7 +60,9 @@ if (isset($_REQUEST['firstname'])) {
   <title>تسجيل حساب جديد</title>
 
   <!-- Bootstrap core CSS -->
+  <!-- استدعاء ملف مكتبة البوتسراب الخاصة بالتصميم -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!-- بدء كود ال سي اس اس الخاص بتنسيق الصفحة -->
   <style>
     body {
       color: #000;
@@ -147,9 +169,12 @@ if (isset($_REQUEST['firstname'])) {
       text-decoration: underline;
     }
   </style>
-</head>
+    <!-- نهاية كود ال سي اس اس الخاص بتنسيق الصفحة -->
 
+</head>
+<!-- نهاية الهيدر -->
 <body>
+  <!-- الفورم الذي يقوم المستخدم بإضافة بياناته فيه -->
   <div class="signup-form">
     <form action="" method="POST" autocomplete="off">
       <h2> تسجيل حساب جديد</h2>
@@ -179,18 +204,28 @@ if (isset($_REQUEST['firstname'])) {
   </div>
 </body>
 <!-- Bootstrap core JavaScript -->
+<!-- استدعاء مكتبة البوتسراب المستخدمة في تصميم الواجهات -->
+
 <script src="js/jquery.slim.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <!-- Croppie -->
 <script src="js/profile-picture.js"></script>
 <!-- Menu Toggle Script -->
 <script>
+    // كود جي كويري في حال الضغط على العنصر الذي يحتوي اسم الكلام منيو توجل لتنفيذ كود معين  
+
   $("#menu-toggle").click(function(e) {
+        // الغاء تحديث الصفحة عند تتنفيذ الأمر
+
     e.preventDefault();
+        // يتم تغير اضافة اسم الكلاس أو حذفه عند تنفيذ الدالة
+
     $("#wrapper").toggleClass("toggled");
   });
 </script>
 <script>
+    //استدعاء مكتبة فيذر للايقونات
+
   feather.replace()
 </script>
 
